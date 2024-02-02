@@ -3,7 +3,7 @@ import * as PlatformError from "@effect/platform/Error";
 import { Context, Data, Effect, Layer } from "effect";
 import * as _Lightningcss from "lightningcss";
 
-export class CssError extends Data.TaggedError("CssError")<{
+class CssError extends Data.TaggedError("CssError")<{
   error: unknown;
 }> {}
 
