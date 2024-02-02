@@ -1,0 +1,17 @@
+{
+  "name": "effect-static-site-generation",
+  "version": "1.0.0",
+  "author": "Sandro Maglione",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "ts-node src/bin.ts"
+  },
+  "dependencies": {
+    "effect": "^2.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
