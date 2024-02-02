@@ -1,6 +1,7 @@
 import * as Fs from "@effect/platform-node/FileSystem";
 import { Console, Effect, Layer, ReadonlyArray, pipe } from "effect";
 import * as Converter from "./Converter";
+import * as Template from "./Template";
 
 interface MarkdownFile {
   markdown: string;
@@ -20,8 +21,13 @@ const readFiles = (fileNameWithExtension: string) =>
 const writeHtml = (markdownFile: MarkdownFile) =>
   Effect.gen(function* (_) {
     const fs = yield* _(Fs.FileSystem);
+    const template = yield* _(Template.Template);
+
     const converter = yield* _(Converter.Converter);
-    const html = yield* _(converter.makeHtml(markdownFile.markdown));
+    const body = yield* _(converter.makeHtml(markdownFile.markdown));
+    const html = yield* _(
+      template.makePage({ body, title: markdownFile.fileName })
+    );
     yield* _(fs.writeFileString(`./build/${markdownFile.fileName}.html`, html));
     return;
   });
@@ -53,7 +59,13 @@ const program = Effect.gen(function* (_) {
 });
 
 const runnable = program.pipe(
-  Effect.provide(Layer.mergeAll(Fs.layer, Converter.ConverterShowdown))
+  Effect.provide(
+    Layer.mergeAll(
+      Fs.layer,
+      Converter.ConverterShowdown,
+      Template.TemplateMustache
+    )
+  )
 );
 
 const main = runnable.pipe(
