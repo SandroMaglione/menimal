@@ -1,5 +1,5 @@
 import { Brand, Context, Data, Effect, Layer } from "effect";
-import * as Showdown from "showdown";
+import * as Showdown from "./Showdown";
 
 class ConverterError extends Data.TaggedError("ConverterError")<{
   error: unknown;
@@ -20,14 +20,15 @@ export const Converter = Context.Tag<Converter, ConverterImpl>(
   "@app/Converter"
 );
 
-export const ConverterShowdown = Layer.succeed(
+export const ConverterShowdown = Layer.effect(
   Converter,
-  Converter.of({
-    makeHtml: (markdown) =>
-      Effect.gen(function* (_) {
-        const converter = new Showdown.Converter(); // TODO: Make service
-        const html = converter.makeHtml(markdown);
-        return Html(html);
-      }),
-  })
-);
+  Effect.map(Showdown.Showdown, (converter) =>
+    Converter.of({
+      makeHtml: (markdown) =>
+        Effect.gen(function* (_) {
+          const html = converter.makeHtml(markdown);
+          return Html(html);
+        }),
+    })
+  )
+).pipe(Layer.provide(Showdown.ShowdownLive));
