@@ -17,6 +17,14 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
     <img alt="sandromaglione.com Newsletter weekly project" src="https://www.sandromaglione.com/static/images/newsletter_banner.webp" target="_blank" /> 
 </a>
 
+## TODO
+- [ ] Generate static files (`favicon.ico`, `robots.txt`)
+- [ ] `frontmatter` (title, tags, category)
+- [ ] Configuration file (folder names for `pages`, `build`, styles, website name, description)
+- [ ] Minify html build
+- [ ] CLI (?)
+- [ ] Deploy (how to?)
+
 ## Project structure
 
 **Read all the details of the implementation in the full article** 🔜
