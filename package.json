@@ -9,10 +9,12 @@
   "dependencies": {
     "@effect/platform": "^0.43.7",
     "@effect/platform-node": "^0.42.7",
-    "effect": "^2.2.3"
+    "effect": "^2.2.3",
+    "showdown": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
+    "@types/showdown": "^2.0.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
