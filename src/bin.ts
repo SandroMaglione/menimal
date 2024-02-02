@@ -1,6 +1,7 @@
 import * as Fs from "@effect/platform-node/FileSystem";
 import { Console, Effect, Layer, ReadonlyArray, pipe } from "effect";
 import * as Converter from "./Converter";
+import * as Css from "./Css";
 import * as Template from "./Template";
 
 interface MarkdownFile {
@@ -34,6 +35,8 @@ const writeHtml = (markdownFile: MarkdownFile) =>
 
 const program = Effect.gen(function* (_) {
   const fs = yield* _(Fs.FileSystem);
+  const css = yield* _(Css.Css);
+
   const fileNames = yield* _(fs.readDirectory(`./pages`)); // TODO: Config for path "pages"
   yield* _(Console.log("Files in 'pages':", fileNames));
 
@@ -55,6 +58,10 @@ const program = Effect.gen(function* (_) {
   yield* _(Effect.all(pipe(files, ReadonlyArray.map(writeHtml))));
   yield* _(Console.log("'build' generated!"));
 
+  const styleCss = yield* _(css.build);
+  yield* _(fs.writeFile("./build/style.css", styleCss));
+  yield* _(Console.log("Added css styles!"));
+
   return;
 });
 
@@ -63,7 +70,8 @@ const runnable = program.pipe(
     Layer.mergeAll(
       Fs.layer,
       Converter.ConverterShowdown,
-      Template.TemplateMustache
+      Template.TemplateMustache,
+      Css.CssLightingCss
     )
   )
 );
