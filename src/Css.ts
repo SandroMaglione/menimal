@@ -26,10 +26,10 @@ export const CssLightingCss = Layer.effect(
   Effect.map(Fs.FileSystem, (fs) =>
     Css.of({
       build: Effect.gen(function* (_) {
-        const code = yield* _(fs.readFileString("./style.css"));
+        const code = yield* _(fs.readFile("./style.css"));
         const result = _Lightningcss.transform({
+          code,
           filename: "style.css",
-          code: globalThis.Buffer.from(code),
           minify: true,
         });
         return result.code;
