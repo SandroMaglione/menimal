@@ -79,7 +79,7 @@ export const TemplateMustache = Layer.effect(
               ReadonlyArray.map(({ modifiedAt, origin }) => ({
                 name: file.title(origin),
                 time: modifiedAt.toDateString(),
-                href: `/${file.fileName(origin)}`,
+                href: `/${file.fileName(origin)}.html`,
               }))
             ),
           });
