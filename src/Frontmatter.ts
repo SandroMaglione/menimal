@@ -1,6 +1,6 @@
 import * as Schema from "@effect/schema/Schema";
 import { Console, Context, Data, Effect, Either, Layer } from "effect";
-import _FrontMatter from "front-matter";
+import * as _FrontMatter from "front-matter";
 import { FrontmatterSchema } from "./schema";
 
 class FrontmatterError extends Data.TaggedError("FrontmatterError")<{
@@ -30,7 +30,7 @@ export const FrontmatterLive = Layer.succeed(
   Frontmatter.of({
     extractFrontmatter: (text) =>
       Effect.gen(function* (_) {
-        const { body, attributes } = _FrontMatter(text);
+        const { body, attributes } = _FrontMatter.default(text);
         yield* _(Console.log(attributes));
 
         const frontmatterSchema = yield* _(

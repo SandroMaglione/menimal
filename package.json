@@ -15,9 +15,11 @@
     "showdown": "^2.1.0"
   },
   "devDependencies": {
+    "@types/html-minifier": "^4.0.5",
     "@types/mustache": "^4.2.5",
     "@types/node": "^20.11.16",
     "@types/showdown": "^2.0.6",
+    "html-minifier": "^4.0.0",
     "lightningcss": "^1.23.0",
     "mustache": "^4.2.0",
     "ts-node": "^10.9.2",

@@ -20,8 +20,8 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
 ## TODO
 - [x] Generate static files (`favicon.ico`, `robots.txt`)
 - [x] `frontmatter` (title, tags, category)
+- [x] Minify html build
 - [ ] Configuration file (folder names for `pages`, `build`, styles, website name, description)
-- [ ] Minify html build
 - [ ] CLI (?)
 - [ ] Deploy (how to?)
 
