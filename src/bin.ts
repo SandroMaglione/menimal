@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Console, Effect, Layer, ReadonlyArray, pipe } from "effect";
 import * as Converter from "./Converter";
 import * as Css from "./Css";
