@@ -31,6 +31,7 @@ const program = Effect.gen(function* (_) {
                 body: bodyHtml,
                 title: markdownFile.fileName,
                 h1: markdownFile.title,
+                modifiedAt: markdownFile.modifiedAt.toDateString(),
               })
             );
 

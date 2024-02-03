@@ -1,6 +1,14 @@
 import * as Fs from "@effect/platform-node/FileSystem";
 import * as PlatformError from "@effect/platform/Error";
-import { Console, Context, Effect, Layer, ReadonlyArray, pipe } from "effect";
+import {
+  Console,
+  Context,
+  Effect,
+  Layer,
+  Option,
+  ReadonlyArray,
+  pipe,
+} from "effect";
 import * as _HtmlMinifier from "html-minifier"; // TODO: Change with `@minify-html/node` (https://github.com/wilsonzlin/minify-html/issues/172)
 import type { FrontmatterSchema } from "./schema";
 
@@ -8,6 +16,7 @@ interface MarkdownFile {
   markdown: string;
   fileName: string;
   title: string;
+  modifiedAt: Date;
 }
 
 export interface FileSystem {
@@ -51,14 +60,19 @@ export const FileSystemLive = Layer.effect(
               fileNames,
               ReadonlyArray.map((fileNameWithExtension: string) =>
                 Effect.gen(function* (_) {
-                  const markdown = yield* _(
-                    fs.readFileString(`./pages/${fileNameWithExtension}`)
+                  const path = `./pages/${fileNameWithExtension}`;
+                  const stat = yield* _(fs.stat(path));
+                  const modifiedAt = pipe(
+                    stat.mtime,
+                    Option.getOrElse(() => new Date())
                   );
+                  const markdown = yield* _(fs.readFileString(path));
+
                   const fileNameWithoutExtension =
                     fileNameWithExtension.replace(/\.[^/.]+$/, "");
                   const fileName = fileNameWithoutExtension.toLowerCase();
                   const title = fileNameWithoutExtension.replace(/-/g, " ");
-                  return { fileName, markdown, title };
+                  return { fileName, markdown, title, modifiedAt };
                 })
               )
             ),

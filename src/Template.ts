@@ -7,6 +7,7 @@ interface PageParams {
   title: string;
   body: string;
   h1: string;
+  modifiedAt: string;
 }
 
 class TemplateError extends Data.TaggedError("TemplateError")<{

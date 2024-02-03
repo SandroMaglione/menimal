@@ -37,4 +37,12 @@ header {
     margin-bottom: 15px;
     line-height: 1.7;
   }
+
+  time {
+    margin-bottom: 20px;
+    display: block;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 35px;
+  }
 }
