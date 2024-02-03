@@ -25,6 +25,7 @@ const program = Effect.gen(function* (_) {
               frontmatter.extractFrontmatter(markdownFile.markdown)
             );
             const bodyHtml = yield* _(converter.makeHtml(body));
+
             const html = yield* _(
               template.makePage({
                 body: bodyHtml,

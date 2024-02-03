@@ -3,7 +3,7 @@ import * as PlatformError from "@effect/platform/Error";
 import { Context, Data, Effect, Layer } from "effect";
 import * as _Mustache from "mustache";
 
-interface TemplateParams {
+interface PageParams {
   title: string;
   body: string;
 }
@@ -18,7 +18,7 @@ export interface Template {
 
 export interface TemplateImpl {
   makePage: (
-    params: TemplateParams
+    params: PageParams
   ) => Effect.Effect<
     never,
     PlatformError.PlatformError | TemplateError,
@@ -34,10 +34,17 @@ export const TemplateMustache = Layer.effect(
     Template.of({
       makePage: (params) =>
         Effect.gen(function* (_) {
+          const headerTemplate = yield* _(
+            fs.readFileString("./templates/header.html")
+          );
           const template = yield* _(
             fs.readFileString("./templates/index.html")
           );
-          return _Mustache.render(template, params);
+          const header = _Mustache.render(headerTemplate, params);
+          return _Mustache.render(template, {
+            ...params,
+            header,
+          });
         }),
     })
   )

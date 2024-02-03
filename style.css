@@ -5,3 +5,29 @@ body {
   margin: 0;
   scroll-behavior: smooth;
 }
+
+body {
+  max-width: 980px;
+  margin: auto;
+  overflow-x: hidden;
+  font-family: Noto, Hiragino Sans, Helvetica, Arial, sans-serif;
+  color: #212427;
+  line-height: 1.4;
+  letter-spacing: 0.1px;
+  -webkit-font-smoothing: antialiased;
+}
+
+header {
+  margin-top: 25px;
+  text-align: center;
+
+  nav p {
+    font-size: 32px;
+  }
+}
+
+.content {
+  max-width: 680px;
+  margin: auto;
+  margin-top: 60px;
+}
