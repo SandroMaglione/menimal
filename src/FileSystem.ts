@@ -29,6 +29,8 @@ export interface FileSystemImpl {
     MarkdownFile[]
   >;
 
+  readConfig: Effect.Effect<never, PlatformError.PlatformError, string>;
+
   writeHtml: (params: {
     fileName: string;
     html: string;
@@ -50,6 +52,10 @@ export const FileSystemLive = Layer.effect(
   FileSystem,
   Effect.map(Fs.FileSystem, (fs) =>
     FileSystem.of({
+      readConfig: Effect.gen(function* (_) {
+        return yield* _(fs.readFileString("./config.json"));
+      }),
+
       buildMarkdownFiles: Effect.gen(function* (_) {
         const fileNames = yield* _(fs.readDirectory(`./pages`)); // TODO: Config for path "pages"
         yield* _(Console.log("Files in 'pages':", fileNames));

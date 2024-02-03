@@ -3,6 +3,7 @@ import * as Converter from "./Converter";
 import * as Css from "./Css";
 import * as FileSystem from "./FileSystem";
 import * as Frontmatter from "./Frontmatter";
+import * as SiteConfig from "./SiteConfig";
 import * as Template from "./Template";
 
 const program = Effect.gen(function* (_) {
@@ -11,6 +12,7 @@ const program = Effect.gen(function* (_) {
   const template = yield* _(Template.Template);
   const converter = yield* _(Converter.Converter);
   const frontmatter = yield* _(Frontmatter.Frontmatter);
+  const siteConfig = yield* _(SiteConfig.SiteConfig);
 
   const files = yield* _(fileSystem.buildMarkdownFiles);
   yield* _(Console.log("File content:", files));
@@ -29,7 +31,7 @@ const program = Effect.gen(function* (_) {
             const html = yield* _(
               template.makePage({
                 body: bodyHtml,
-                title: markdownFile.fileName,
+                title: siteConfig.name,
                 h1: markdownFile.title,
                 modifiedAt: markdownFile.modifiedAt.toDateString(),
               })
@@ -60,6 +62,7 @@ const program = Effect.gen(function* (_) {
 });
 
 const runnable = program.pipe(
+  Effect.provideServiceEffect(SiteConfig.SiteConfig, SiteConfig.load),
   Effect.provide(
     Layer.mergeAll(
       Converter.ConverterShowdown,
@@ -73,6 +76,7 @@ const runnable = program.pipe(
 
 const main: Effect.Effect<never, never, void> = runnable.pipe(
   Effect.catchTags({
+    SiteConfigError: (error) => Console.log("Config error", error),
     BadArgument: (error) => Console.log("Arg error", error),
     SystemError: (error) => Console.log("System error", error),
     CssError: (error) => Console.log("Css error", error),

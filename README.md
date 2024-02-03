@@ -21,7 +21,9 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
 - [x] Generate static files (`favicon.ico`, `robots.txt`)
 - [x] `frontmatter` (title, tags, category)
 - [x] Minify html build
-- [ ] Configuration file (folder names for `pages`, `build`, styles, website name, description)
+- [x] Configuration file (folder names for `pages`, `build`, styles, website name, description)
+- [ ] Index (list posts)
+- [ ] Watch file changes (?)
 - [ ] CLI (?)
 - [ ] Deploy (how to?)
 

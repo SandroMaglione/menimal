@@ -30,12 +30,50 @@ header {
   max-width: 680px;
   margin: auto;
   margin-top: 60px;
+  margin-bottom: 120px;
+  line-height: 1.7;
 
-  h1 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-weight: 600;
     margin-top: 40px;
     margin-bottom: 15px;
-    line-height: 1.7;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 24px;
+
+    &::before {
+      content: "■";
+      font-family: system-ui;
+      font-size: 100%;
+      padding-right: 12px;
+    }
+  }
+
+  h3 {
+    font-size: 20px;
+
+    &::before {
+      content: "□ ";
+      font-family: system-ui;
+      font-size: 100%;
+      padding-right: 6px;
+    }
+  }
+
+  h4 {
+    font-size: 17px;
+  }
+
+  a {
+    color: #337ab7;
   }
 
   time {
@@ -44,5 +82,22 @@ header {
     font-size: 16px;
     margin-top: 20px;
     margin-bottom: 35px;
+  }
+
+  p {
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 35px;
+  }
+
+  blockquote {
+    background-color: rgba(250, 250, 250, 0.48);
+    outline: 1px solid rgba(228, 228, 228, 0.8705882353);
+    padding: 20px;
+    overflow: auto;
+  }
+
+  ul {
+    list-style-position: inside;
   }
 }
