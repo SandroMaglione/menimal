@@ -50,6 +50,9 @@ const program = Effect.gen(function* (_) {
   yield* _(fileSystem.writeCss({ source: styleCss }));
   yield* _(Console.log("Added css styles!"));
 
+  yield* _(fileSystem.writeStaticFiles);
+  yield* _(Console.log("Copied static files!"));
+
   return;
 });
 

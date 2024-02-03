@@ -27,6 +27,8 @@ export interface FileSystemImpl {
   writeCss: (params: {
     source: globalThis.Uint8Array;
   }) => Effect.Effect<never, PlatformError.PlatformError, void>;
+
+  writeStaticFiles: Effect.Effect<never, PlatformError.PlatformError, void>;
 }
 
 export const FileSystem = Context.Tag<FileSystem, FileSystemImpl>(
@@ -76,6 +78,20 @@ export const FileSystemLive = Layer.effect(
         Effect.gen(function* (_) {
           yield* _(fs.writeFile("./build/style.css", source));
         }),
+
+      writeStaticFiles: Effect.gen(function* (_) {
+        const staticFiles = yield* _(fs.readDirectory("./static"));
+        yield* _(
+          Effect.all(
+            staticFiles.map((file) =>
+              fs.copyFile(`./static/${file}`, `./build/${file}`)
+            ),
+            {
+              concurrency: "unbounded", // TODO
+            }
+          )
+        );
+      }),
     })
   )
 ).pipe(Layer.provide(Fs.layer));
