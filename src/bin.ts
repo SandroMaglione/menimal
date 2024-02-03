@@ -29,7 +29,7 @@ const program = Effect.gen(function* (_) {
             const bodyHtml = yield* _(converter.makeHtml(body));
 
             const html = yield* _(
-              template.makePage({
+              template.makePost({
                 body: bodyHtml,
                 title: siteConfig.name,
                 h1: markdownFile.title,
@@ -50,6 +50,15 @@ const program = Effect.gen(function* (_) {
     )
   );
   yield* _(Console.log("'build' generated!"));
+
+  const indexHtml = yield* _(
+    template.makeIndex({
+      title: siteConfig.name,
+      files,
+    })
+  );
+  yield* _(fileSystem.writeIndex({ html: indexHtml }));
+  yield* _(Console.log("Added index"));
 
   const styleCss = yield* _(css.build);
   yield* _(fileSystem.writeCss({ source: styleCss }));

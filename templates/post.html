@@ -8,12 +8,10 @@
   </head>
   <body>
     {{{header}}}
-    <main class="index">
-      <ul>
-        {{#body}}
-        <li><time>{{{time}}}</time><a href="{{{href}}}">{{{name}}}</a></li>
-        {{/body}}
-      </ul>
+    <main class="content">
+      <h1>{{{h1}}}</h1>
+      <time>{{{modifiedAt}}}</time>
+      {{{body}}}
     </main>
   </body>
 </html>

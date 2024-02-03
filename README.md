@@ -23,7 +23,11 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
 - [x] Minify html build
 - [x] Configuration file (folder names for `pages`, `build`, styles, website name, description)
 - [ ] Index (list posts)
-- [ ] Watch file changes (?)
+- [ ] Check all links are not broken
+- [ ] Validate `tags` in `config.json`
+- [ ] Add `npx` command
+- [ ] Document what is possible with `md`
+- [ ] Watch file changes (https://www.npmjs.com/package/node-watch)
 - [ ] CLI (?)
 - [ ] Deploy (how to?)
 

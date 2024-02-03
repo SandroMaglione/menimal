@@ -26,6 +26,32 @@ header {
   }
 }
 
+a {
+  color: #337ab7;
+}
+
+.index {
+  max-width: 680px;
+  margin: auto;
+  margin-top: 60px;
+  margin-bottom: 120px;
+  text-align: center;
+
+  ul {
+    list-style: none;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 35px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+
+    li a {
+      margin-left: 20px;
+    }
+  }
+}
+
 .content {
   max-width: 680px;
   margin: auto;
@@ -70,10 +96,6 @@ header {
 
   h4 {
     font-size: 17px;
-  }
-
-  a {
-    color: #337ab7;
   }
 
   time {
