@@ -7,6 +7,7 @@ import type { FrontmatterSchema } from "./schema";
 interface MarkdownFile {
   markdown: string;
   fileName: string;
+  title: string;
 }
 
 export interface FileSystem {
@@ -44,18 +45,23 @@ export const FileSystemLive = Layer.effect(
         const fileNames = yield* _(fs.readDirectory(`./pages`)); // TODO: Config for path "pages"
         yield* _(Console.log("Files in 'pages':", fileNames));
 
-        const readFiles = (fileNameWithExtension: string) =>
-          Effect.gen(function* (_) {
-            const markdown = yield* _(
-              fs.readFileString(`./pages/${fileNameWithExtension}`)
-            );
-            const fileName = fileNameWithExtension.replace(/\.[^/.]+$/, "");
-            return { fileName, markdown };
-          });
-
         const files = yield* _(
           Effect.all(
-            pipe(fileNames, ReadonlyArray.map(readFiles)),
+            pipe(
+              fileNames,
+              ReadonlyArray.map((fileNameWithExtension: string) =>
+                Effect.gen(function* (_) {
+                  const markdown = yield* _(
+                    fs.readFileString(`./pages/${fileNameWithExtension}`)
+                  );
+                  const fileNameWithoutExtension =
+                    fileNameWithExtension.replace(/\.[^/.]+$/, "");
+                  const fileName = fileNameWithoutExtension.toLowerCase();
+                  const title = fileNameWithoutExtension.replace(/-/g, " ");
+                  return { fileName, markdown, title };
+                })
+              )
+            ),
             { concurrency: "unbounded" } // TODO
           )
         );

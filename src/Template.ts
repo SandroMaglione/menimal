@@ -6,6 +6,7 @@ import * as _Mustache from "mustache";
 interface PageParams {
   title: string;
   body: string;
+  h1: string;
 }
 
 class TemplateError extends Data.TaggedError("TemplateError")<{
