@@ -1,6 +1,7 @@
 import * as Fs from "@effect/platform-node/FileSystem";
 import * as PlatformError from "@effect/platform/Error";
 import { Console, Context, Effect, Layer, ReadonlyArray, pipe } from "effect";
+import type { FrontmatterSchema } from "./schema";
 
 interface MarkdownFile {
   markdown: string;
@@ -20,6 +21,7 @@ export interface FileSystemImpl {
   writeHtml: (params: {
     fileName: string;
     html: string;
+    frontmatterSchema: FrontmatterSchema;
   }) => Effect.Effect<never, PlatformError.PlatformError, void>;
 
   writeCss: (params: {
@@ -65,7 +67,7 @@ export const FileSystemLive = Layer.effect(
         return files;
       }),
 
-      writeHtml: ({ fileName, html }) =>
+      writeHtml: ({ fileName, html, frontmatterSchema }) =>
         Effect.gen(function* (_) {
           yield* _(fs.writeFileString(`./build/${fileName}.html`, html));
         }),

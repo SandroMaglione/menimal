@@ -9,7 +9,9 @@
   "dependencies": {
     "@effect/platform": "^0.43.7",
     "@effect/platform-node": "^0.42.7",
+    "@effect/schema": "^0.61.5",
     "effect": "^2.2.3",
+    "front-matter": "^4.0.2",
     "showdown": "^2.1.0"
   },
   "devDependencies": {
