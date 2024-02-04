@@ -1,4 +1,5 @@
 import * as Fs from "@effect/platform-node/FileSystem";
+import * as Path from "@effect/platform-node/Path";
 import * as PlatformError from "@effect/platform/Error";
 import { Context, Data, Effect, Layer, ReadonlyArray, pipe } from "effect";
 import * as _Mustache from "mustache";
@@ -46,14 +47,16 @@ export const Template = Context.Tag<Template, TemplateImpl>("@app/Template");
 
 export const TemplateMustache = Layer.effect(
   Template,
-  Effect.map(Fs.FileSystem, (fs) =>
+  Effect.map(Effect.all([Fs.FileSystem, Path.Path]), ([fs, path]) =>
     Template.of({
       makePost: (params) =>
         Effect.gen(function* (_) {
           const headerTemplate = yield* _(
-            fs.readFileString("./templates/header.html")
+            fs.readFileString(path.join(__dirname, "header.html"))
           );
-          const template = yield* _(fs.readFileString("./templates/post.html"));
+          const template = yield* _(
+            fs.readFileString(path.join(__dirname, "post.html"))
+          );
           const header = _Mustache.render(headerTemplate, params);
           return _Mustache.render(template, {
             ...params,
@@ -64,10 +67,10 @@ export const TemplateMustache = Layer.effect(
       makeIndex: (params) =>
         Effect.gen(function* (_) {
           const headerTemplate = yield* _(
-            fs.readFileString("./templates/header.html")
+            fs.readFileString(path.join(__dirname, "header.html"))
           );
           const template = yield* _(
-            fs.readFileString("./templates/index.html")
+            fs.readFileString(path.join(__dirname, "index.html"))
           );
           const header = _Mustache.render(headerTemplate, params);
           return _Mustache.render(template, {
@@ -86,4 +89,4 @@ export const TemplateMustache = Layer.effect(
         }),
     })
   )
-).pipe(Layer.provide(Fs.layer));
+).pipe(Layer.provide(Layer.mergeAll(Fs.layer, Path.layer)));

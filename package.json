@@ -1,6 +1,6 @@
 {
   "name": "menimal",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Sandro Maglione",
   "description": "Generate a static html-only website from markdown and css",
   "repository": "https://github.com/SandroMaglione/effect-static-site-generation",
