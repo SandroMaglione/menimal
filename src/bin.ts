@@ -87,14 +87,21 @@ const runnable = program.pipe(
 
 const main: Effect.Effect<never, never, void> = runnable.pipe(
   Effect.catchTags({
-    SiteConfigError: (error) => Effect.logInfo("Config error"),
-    BadArgument: (error) => Effect.logInfo("Arg error"),
-    SystemError: (error) => Effect.logInfo("System error"),
-    CssError: (error) => Effect.logInfo("Css error"),
-    FrontmatterError: (error) => Effect.logInfo("Frontmatter invalid"),
-    TemplateError: (error) => Effect.logInfo("Template error"),
-    ConverterError: (error) => Effect.logInfo("Cannot covert markdown to html"),
+    SiteConfigError: (error) => Effect.logError("Config error"),
+    BadArgument: (error) => Effect.logError("Arg error"),
+    SystemError: (error) => Effect.logError("System error"),
+    CssError: (error) => Effect.logError("Css error"),
+    FrontmatterError: (error) => Effect.logError("Frontmatter invalid"),
+    TemplateError: (error) => Effect.logError("Template error"),
+    ConverterError: (error) =>
+      Effect.logError("Cannot covert markdown to html"),
   })
 );
 
-Effect.runPromise(main);
+Effect.runPromise(main)
+  .catch((error) => {
+    console.log("Error:", error);
+  })
+  .finally(() => {
+    console.log("Done!");
+  });

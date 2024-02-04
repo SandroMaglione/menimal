@@ -24,12 +24,15 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
 - [x] Configuration file (folder names for `pages`, `build`, styles, website name, description)
 - [x] Index (list posts)
 - [x] `import * as path from "node:path"`
+- [x] Add `npx` command
 - [ ] Check all links are not broken
 - [ ] Validate `tags` in `config.json`
-- [ ] Add `npx` command
 - [ ] Document what is possible with `md`
 - [ ] CLI (?)
 - [ ] Deploy (how to?)
+
+## Notes
+- Use `npx --loglevel silly ..` from `example` folder to debug `npx` command
 
 ## Project structure
 

@@ -1,6 +1,6 @@
 {
   "name": "menimal",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "Sandro Maglione",
   "description": "Generate a static html-only website from markdown and css",
   "license": "MIT",
@@ -19,7 +19,6 @@
     "dist"
   ],
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "tsc": "tsc -p tsconfig.json",
     "build": "ts-node src/bin.ts",
     "bundle": "tsup src/bin.ts",
