@@ -23,6 +23,7 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
 - [x] Minify html build
 - [x] Configuration file (folder names for `pages`, `build`, styles, website name, description)
 - [x] Index (list posts)
+- [ ] `import * as path from "node:path"`
 - [ ] Check all links are not broken
 - [ ] Validate `tags` in `config.json`
 - [ ] Add `npx` command

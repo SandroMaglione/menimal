@@ -1,15 +1,26 @@
 {
   "name": "menimal",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "author": "Sandro Maglione",
-  "main": "src/bin.js",
+  "description": "Generate a static html-only website from markdown and css",
+  "repository": "https://github.com/SandroMaglione/effect-static-site-generation",
+  "main": "dist/bin.js",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "ts-node src/bin.ts"
+    "build": "ts-node src/bin.ts",
+    "bundle": "tsup src/bin.ts",
+    "publish": "pnpm bundle && npm publish"
   },
   "bin": {
-    "menimal": "src/bin.js"
+    "menimal": "dist/bin.js"
   },
   "dependencies": {
     "@effect/platform": "^0.43.7",
@@ -28,6 +39,7 @@
     "@types/node": "^20.11.16",
     "@types/showdown": "^2.0.6",
     "ts-node": "^10.9.2",
+    "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   }
 }
