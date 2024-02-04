@@ -1,5 +1,5 @@
 import * as Schema from "@effect/schema/Schema";
-import { Console, Context, Data, Effect, Either, Layer } from "effect";
+import { Context, Data, Effect, Either, Layer } from "effect";
 import * as _FrontMatter from "front-matter";
 import { FrontmatterSchema } from "./schema";
 
@@ -31,7 +31,7 @@ export const FrontmatterLive = Layer.succeed(
     extractFrontmatter: (text) =>
       Effect.gen(function* (_) {
         const { body, attributes } = _FrontMatter.default(text);
-        yield* _(Console.log(attributes));
+        yield* _(Effect.logInfo(attributes));
 
         const frontmatterSchema = yield* _(
           attributes,

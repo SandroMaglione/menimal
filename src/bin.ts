@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Console, Effect, Layer, ReadonlyArray, pipe } from "effect";
+import { Effect, Layer, ReadonlyArray, pipe } from "effect";
 import * as Converter from "./Converter";
 import * as Css from "./Css";
 import * as FileSystem from "./FileSystem";
@@ -17,7 +17,7 @@ const program = Effect.gen(function* (_) {
   const siteConfig = yield* _(SiteConfig.SiteConfig);
 
   const files = yield* _(fileSystem.buildMarkdownFiles);
-  yield* _(Console.log("File content:", files));
+  yield* _(Effect.logInfo(`File content: ${files}`));
 
   yield* _(
     Effect.all(
@@ -51,7 +51,7 @@ const program = Effect.gen(function* (_) {
       )
     )
   );
-  yield* _(Console.log("'build' generated!"));
+  yield* _(Effect.logInfo("'build' generated!"));
 
   const indexHtml = yield* _(
     template.makeIndex({
@@ -60,14 +60,14 @@ const program = Effect.gen(function* (_) {
     })
   );
   yield* _(fileSystem.writeIndex({ html: indexHtml }));
-  yield* _(Console.log("Added index"));
+  yield* _(Effect.logInfo("Added index"));
 
   const styleCss = yield* _(css.build);
   yield* _(fileSystem.writeCss({ source: styleCss }));
-  yield* _(Console.log("Added css styles!"));
+  yield* _(Effect.logInfo("Added css styles!"));
 
   yield* _(fileSystem.writeStaticFiles);
-  yield* _(Console.log("Copied static files!"));
+  yield* _(Effect.logInfo("Copied static files!"));
 
   return;
 });
@@ -87,14 +87,13 @@ const runnable = program.pipe(
 
 const main: Effect.Effect<never, never, void> = runnable.pipe(
   Effect.catchTags({
-    SiteConfigError: (error) => Console.log("Config error", error),
-    BadArgument: (error) => Console.log("Arg error", error),
-    SystemError: (error) => Console.log("System error", error),
-    CssError: (error) => Console.log("Css error", error),
-    FrontmatterError: (error) => Console.log("Frontmatter invalid", error),
-    TemplateError: (error) => Console.log("Template error", error),
-    ConverterError: (error) =>
-      Console.log("Cannot covert markdown to html", error),
+    SiteConfigError: (error) => Effect.logInfo("Config error"),
+    BadArgument: (error) => Effect.logInfo("Arg error"),
+    SystemError: (error) => Effect.logInfo("System error"),
+    CssError: (error) => Effect.logInfo("Css error"),
+    FrontmatterError: (error) => Effect.logInfo("Frontmatter invalid"),
+    TemplateError: (error) => Effect.logInfo("Template error"),
+    ConverterError: (error) => Effect.logInfo("Cannot covert markdown to html"),
   })
 );
 
