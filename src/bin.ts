@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
-import { Effect, Layer, ReadonlyArray, pipe } from "effect";
-import * as Converter from "./Converter";
-import * as Css from "./Css";
-import * as FileSystem from "./FileSystem";
-import * as Frontmatter from "./Frontmatter";
-import * as SiteConfig from "./SiteConfig";
-import * as Template from "./Template";
+import { Effect, Layer, LogLevel, Logger, ReadonlyArray, pipe } from "effect";
+import * as Converter from "./Converter.js";
+import * as Css from "./Css.js";
+import * as FileSystem from "./FileSystem.js";
+import * as Frontmatter from "./Frontmatter.js";
+import { ChalkLogger } from "./Logger.js";
+import * as SiteConfig from "./SiteConfig.js";
+import * as Template from "./Template.js";
 
 const program = Effect.gen(function* (_) {
   const fileSystem = yield* _(FileSystem.FileSystem);
@@ -16,8 +17,8 @@ const program = Effect.gen(function* (_) {
   const frontmatter = yield* _(Frontmatter.Frontmatter);
   const siteConfig = yield* _(SiteConfig.SiteConfig);
 
+  yield* _(Effect.logInfo("Start build"));
   const files = yield* _(fileSystem.buildMarkdownFiles);
-  yield* _(Effect.logInfo(`File content: ${files}`));
 
   yield* _(
     Effect.all(
@@ -51,7 +52,7 @@ const program = Effect.gen(function* (_) {
       )
     )
   );
-  yield* _(Effect.logInfo("'build' generated!"));
+  yield* _(Effect.logInfo("build folder generated"));
 
   const indexHtml = yield* _(
     template.makeIndex({
@@ -64,32 +65,35 @@ const program = Effect.gen(function* (_) {
 
   const styleCss = yield* _(css.build);
   yield* _(fileSystem.writeCss({ source: styleCss }));
-  yield* _(Effect.logInfo("Added css styles!"));
+  yield* _(Effect.logInfo("Added css styles"));
 
   yield* _(fileSystem.writeStaticFiles);
-  yield* _(Effect.logInfo("Copied static files!"));
+  yield* _(Effect.logInfo("Copied static files"));
+  yield* _(Effect.logInfo("Done ✅"));
 
   return;
 });
 
+const MainLive = Layer.mergeAll(
+  Logger.replace(Logger.defaultLogger, ChalkLogger),
+  Logger.minimumLogLevel(LogLevel.Info),
+  Converter.ConverterShowdown,
+  Template.TemplateMustache,
+  Css.CssLightingCss,
+  FileSystem.FileSystemLive,
+  Frontmatter.FrontmatterLive
+);
+
 const runnable = program.pipe(
   Effect.provideServiceEffect(SiteConfig.SiteConfig, SiteConfig.load),
-  Effect.provide(
-    Layer.mergeAll(
-      Converter.ConverterShowdown,
-      Template.TemplateMustache,
-      Css.CssLightingCss,
-      FileSystem.FileSystemLive,
-      Frontmatter.FrontmatterLive
-    )
-  )
+  Effect.provide(MainLive)
 );
 
 const main: Effect.Effect<never, never, void> = runnable.pipe(
   Effect.catchTags({
     SiteConfigError: (error) => Effect.logError("Config error"),
     BadArgument: (error) => Effect.logError("Arg error"),
-    SystemError: (error) => Effect.logError("System error"),
+    SystemError: (error) => Effect.logError(`[System error] ${error.message}`),
     CssError: (error) => Effect.logError("Css error"),
     FrontmatterError: (error) => Effect.logError("Frontmatter invalid"),
     TemplateError: (error) => Effect.logError("Template error"),
@@ -98,10 +102,4 @@ const main: Effect.Effect<never, never, void> = runnable.pipe(
   })
 );
 
-Effect.runPromise(main)
-  .catch((error) => {
-    console.log("Error:", error);
-  })
-  .finally(() => {
-    console.log("Done!");
-  });
+Effect.runPromise(main).catch(console.error);

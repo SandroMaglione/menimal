@@ -2,8 +2,8 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: ["src/bin.ts"],
+  publicDir: false,
   clean: true,
-  publicDir: "src/templates",
   minify: true,
   format: ["cjs"],
 });

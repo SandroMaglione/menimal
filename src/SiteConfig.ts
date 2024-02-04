@@ -1,7 +1,7 @@
 import * as Schema from "@effect/schema/Schema";
 import { Context, Data, Effect, Either } from "effect";
-import * as FileSystem from "./FileSystem";
-import { ConfigSchema } from "./schema";
+import * as FileSystem from "./FileSystem.js";
+import { ConfigSchema } from "./schema.js";
 
 class SiteConfigError extends Data.TaggedError("SiteConfigError")<{
   error: unknown;

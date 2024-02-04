@@ -1,5 +1,5 @@
 import { Context, Layer } from "effect";
-import * as _Showdown from "showdown";
+import _Showdown from "showdown";
 
 export interface Showdown {
   readonly _: unique symbol;

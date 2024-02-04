@@ -1,5 +1,5 @@
 import { Brand, Context, Data, Effect, Layer } from "effect";
-import * as Showdown from "./Showdown";
+import * as Showdown from "./Showdown.js";
 
 class ConverterError extends Data.TaggedError("ConverterError")<{
   error: unknown;

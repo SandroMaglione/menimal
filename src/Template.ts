@@ -2,8 +2,8 @@ import * as Fs from "@effect/platform-node/FileSystem";
 import * as Path from "@effect/platform-node/Path";
 import * as PlatformError from "@effect/platform/Error";
 import { Context, Data, Effect, Layer, ReadonlyArray, pipe } from "effect";
-import * as _Mustache from "mustache";
-import * as file from "./file";
+import _Mustache from "mustache";
+import * as file from "./file.js";
 
 interface PostParams {
   title: string;
@@ -52,10 +52,10 @@ export const TemplateMustache = Layer.effect(
       makePost: (params) =>
         Effect.gen(function* (_) {
           const headerTemplate = yield* _(
-            fs.readFileString(path.join(__dirname, "header.html"))
+            fs.readFileString(path.join(__dirname, "templates", "header.html"))
           );
           const template = yield* _(
-            fs.readFileString(path.join(__dirname, "post.html"))
+            fs.readFileString(path.join(__dirname, "templates", "post.html"))
           );
           const header = _Mustache.render(headerTemplate, params);
           return _Mustache.render(template, {
@@ -67,10 +67,10 @@ export const TemplateMustache = Layer.effect(
       makeIndex: (params) =>
         Effect.gen(function* (_) {
           const headerTemplate = yield* _(
-            fs.readFileString(path.join(__dirname, "header.html"))
+            fs.readFileString(path.join(__dirname, "templates", "header.html"))
           );
           const template = yield* _(
-            fs.readFileString(path.join(__dirname, "index.html"))
+            fs.readFileString(path.join(__dirname, "templates", "index.html"))
           );
           const header = _Mustache.render(headerTemplate, params);
           return _Mustache.render(template, {

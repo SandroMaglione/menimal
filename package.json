@@ -1,6 +1,6 @@
 {
   "name": "menimal",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "Sandro Maglione",
   "description": "Generate a static html-only website from markdown and css",
   "license": "MIT",
@@ -20,16 +20,17 @@
   ],
   "scripts": {
     "tsc": "tsc -p tsconfig.json",
-    "build": "ts-node src/bin.ts",
-    "bundle": "tsup src/bin.ts",
+    "dev": "tsx src/bin.ts",
+    "bundle": "tsup && tsx scripts/copy-templates.ts",
     "upload": "pnpm bundle && npm publish"
   },
   "dependencies": {
     "@effect/platform": "^0.43.7",
     "@effect/platform-node": "^0.42.7",
     "@effect/schema": "^0.61.5",
+    "chalk": "^4.1.2",
     "effect": "^2.2.3",
-    "front-matter": "^4.0.2",
+    "gray-matter": "^4.0.3",
     "html-minifier": "^4.0.0",
     "lightningcss": "^1.23.0",
     "mustache": "^4.2.0",
@@ -40,8 +41,8 @@
     "@types/mustache": "^4.2.5",
     "@types/node": "^20.11.16",
     "@types/showdown": "^2.0.6",
-    "ts-node": "^10.9.2",
     "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   }
 }

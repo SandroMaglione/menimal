@@ -1,7 +1,7 @@
 import * as Schema from "@effect/schema/Schema";
 import { Context, Data, Effect, Either, Layer } from "effect";
-import * as _FrontMatter from "front-matter";
-import { FrontmatterSchema } from "./schema";
+import matter from "gray-matter";
+import { FrontmatterSchema } from "./schema.js";
 
 class FrontmatterError extends Data.TaggedError("FrontmatterError")<{
   error: unknown;
@@ -30,11 +30,9 @@ export const FrontmatterLive = Layer.succeed(
   Frontmatter.of({
     extractFrontmatter: (text) =>
       Effect.gen(function* (_) {
-        const { body, attributes } = _FrontMatter.default(text);
-        yield* _(Effect.logInfo(attributes));
-
+        const { content: body, data } = matter(text);
         const frontmatterSchema = yield* _(
-          attributes,
+          data,
           Schema.decodeUnknownEither(FrontmatterSchema),
           Either.mapLeft((error) => new FrontmatterError({ error }))
         );
