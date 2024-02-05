@@ -5,7 +5,10 @@ export interface Showdown {
   readonly _: unique symbol;
 }
 
-const make = new _Showdown.Converter();
+const make = new _Showdown.Converter({
+  openLinksInNewWindow: true,
+  strikethrough: true,
+});
 
 export const Showdown = Context.Tag<Showdown, typeof make>("@app/Showdown");
 
