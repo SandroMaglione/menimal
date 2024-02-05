@@ -11,7 +11,14 @@
     <main class="index">
       <ul>
         {{#body}}
-        <li><time>{{{time}}}</time><a href="{{{href}}}">{{{name}}}</a></li>
+        <li>
+          <time>{{{time}}}</time><a href="{{{href}}}">{{{name}}}</a>
+          <ul id="tags">
+            {{#tags}}
+            <li>{{{.}}}</li>
+            {{/tags}}
+          </ul>
+        </li>
         {{/body}}
       </ul>
     </main>

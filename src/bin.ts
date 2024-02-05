@@ -4,7 +4,6 @@ import { Effect, Layer, LogLevel, Logger, ReadonlyArray, pipe } from "effect";
 import * as Converter from "./Converter.js";
 import * as Css from "./Css.js";
 import * as FileSystem from "./FileSystem.js";
-import * as Frontmatter from "./Frontmatter.js";
 import * as LinkCheck from "./LinkCheck.js";
 import { ChalkLogger } from "./Logger.js";
 import * as SiteConfig from "./SiteConfig.js";
@@ -15,7 +14,6 @@ const program = Effect.gen(function* (_) {
   const css = yield* _(Css.Css);
   const template = yield* _(Template.Template);
   const converter = yield* _(Converter.Converter);
-  const frontmatter = yield* _(Frontmatter.Frontmatter);
   const siteConfig = yield* _(SiteConfig.SiteConfig);
   const linkCheck = yield* _(LinkCheck.LinkCheck);
 
@@ -29,10 +27,7 @@ const program = Effect.gen(function* (_) {
         files,
         ReadonlyArray.map((markdownFile) =>
           Effect.gen(function* (_) {
-            const { body, frontmatterSchema } = yield* _(
-              frontmatter.extractFrontmatter(markdownFile.markdown)
-            );
-            const bodyHtml = yield* _(converter.makeHtml(body));
+            const bodyHtml = yield* _(converter.makeHtml(markdownFile.body));
 
             const html = yield* _(
               template.makePost({
@@ -40,6 +35,7 @@ const program = Effect.gen(function* (_) {
                 title: siteConfig.name,
                 h1: markdownFile.title,
                 modifiedAt: markdownFile.modifiedAt.toDateString(),
+                frontmatterSchema: markdownFile.frontmatterSchema,
               })
             );
 
@@ -48,7 +44,7 @@ const program = Effect.gen(function* (_) {
               fileSystem.writeHtml({
                 fileName: markdownFile.fileName,
                 html,
-                frontmatterSchema,
+                frontmatterSchema: markdownFile.frontmatterSchema,
               })
             );
           })
@@ -85,7 +81,6 @@ const MainLive = Layer.mergeAll(
   Template.TemplateMustache,
   Css.CssLightingCss,
   FileSystem.FileSystemLive,
-  Frontmatter.FrontmatterLive,
   LinkCheck.LinkCheckLive
 );
 

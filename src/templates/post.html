@@ -11,6 +11,11 @@
     <main class="content">
       <h1>{{{h1}}}</h1>
       <time>{{{modifiedAt}}}</time>
+      <ul id="tags">
+        {{#tags}}
+        <li>{{{.}}}</li>
+        {{/tags}}
+      </ul>
       {{{body}}}
     </main>
   </body>

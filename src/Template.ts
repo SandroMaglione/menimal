@@ -4,16 +4,22 @@ import * as PlatformError from "@effect/platform/Error";
 import { Context, Data, Effect, Layer, ReadonlyArray, pipe } from "effect";
 import _Mustache from "mustache";
 import * as file from "./file.js";
+import type { FrontmatterSchema } from "./schema.js";
 
 interface PostParams {
   title: string;
   body: string;
   h1: string;
   modifiedAt: string;
+  frontmatterSchema: FrontmatterSchema;
 }
 
 interface IndexParams {
-  files: { origin: string; modifiedAt: Date }[];
+  files: {
+    origin: string;
+    modifiedAt: Date;
+    frontmatterSchema: FrontmatterSchema;
+  }[];
   title: string;
 }
 
@@ -59,7 +65,11 @@ export const TemplateMustache = Layer.effect(
           );
           const header = _Mustache.render(headerTemplate, params);
           return _Mustache.render(template, {
-            ...params,
+            tags: params.frontmatterSchema.tags,
+            body: params.body,
+            h1: params.h1,
+            modifiedAt: params.modifiedAt,
+            title: params.title,
             header,
           });
         }),
@@ -79,11 +89,14 @@ export const TemplateMustache = Layer.effect(
             body: pipe(
               params.files,
               file.sort,
-              ReadonlyArray.map(({ modifiedAt, origin }) => ({
-                name: file.title(origin),
-                time: modifiedAt.toDateString(),
-                href: `/${file.fileName(origin)}.html`,
-              }))
+              ReadonlyArray.map(
+                ({ modifiedAt, origin, frontmatterSchema }) => ({
+                  tags: frontmatterSchema.tags,
+                  name: file.title(origin),
+                  time: modifiedAt.toDateString(),
+                  href: `/${file.fileName(origin)}.html`,
+                })
+              )
             ),
           });
         }),

@@ -3,7 +3,7 @@ import { Context, Data, Effect, Either, Layer } from "effect";
 import matter from "gray-matter";
 import { FrontmatterSchema } from "./schema.js";
 
-class FrontmatterError extends Data.TaggedError("FrontmatterError")<{
+export class FrontmatterError extends Data.TaggedError("FrontmatterError")<{
   error: unknown;
 }> {}
 
