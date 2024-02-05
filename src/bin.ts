@@ -34,7 +34,7 @@ const program = Effect.gen(function* (_) {
                 body: bodyHtml,
                 title: siteConfig.name,
                 h1: markdownFile.title,
-                modifiedAt: markdownFile.modifiedAt.toDateString(),
+                modifiedAt: markdownFile.modifiedAt,
                 frontmatterSchema: markdownFile.frontmatterSchema,
               })
             );

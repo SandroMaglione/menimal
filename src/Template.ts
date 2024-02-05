@@ -10,7 +10,7 @@ interface PostParams {
   title: string;
   body: string;
   h1: string;
-  modifiedAt: string;
+  modifiedAt: Date;
   frontmatterSchema: FrontmatterSchema;
 }
 
@@ -68,7 +68,7 @@ export const TemplateMustache = Layer.effect(
             tags: params.frontmatterSchema.tags,
             body: params.body,
             h1: params.h1,
-            modifiedAt: params.modifiedAt,
+            modifiedAt: file.formatDate(params.modifiedAt),
             title: params.title,
             header,
           });
@@ -93,7 +93,7 @@ export const TemplateMustache = Layer.effect(
                 ({ modifiedAt, origin, frontmatterSchema }) => ({
                   tags: frontmatterSchema.tags,
                   name: file.title(origin),
-                  time: modifiedAt.toDateString(),
+                  time: file.formatDate(modifiedAt),
                   href: `/${file.fileName(origin)}.html`,
                 })
               )

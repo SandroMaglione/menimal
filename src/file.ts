@@ -12,7 +12,7 @@ export const title = Function.compose(
   String.replace(/-/g, " ")
 );
 
-export const sort = <T extends { modifiedAt: Date }>(array: T[]) =>
+export const sort = <T extends { modifiedAt: Date }>(array: T[]): T[] =>
   pipe(
     array,
     ReadonlyArray.sortBy(
@@ -23,3 +23,14 @@ export const sort = <T extends { modifiedAt: Date }>(array: T[]) =>
       )
     )
   );
+
+export const formatDate = (date: Date): string => {
+  const intl = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    weekday: "long",
+  });
+
+  return intl.format(date);
+};
