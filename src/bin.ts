@@ -5,6 +5,7 @@ import * as Converter from "./Converter.js";
 import * as Css from "./Css.js";
 import * as FileSystem from "./FileSystem.js";
 import * as Frontmatter from "./Frontmatter.js";
+import * as LinkCheck from "./LinkCheck.js";
 import { ChalkLogger } from "./Logger.js";
 import * as SiteConfig from "./SiteConfig.js";
 import * as Template from "./Template.js";
@@ -16,6 +17,7 @@ const program = Effect.gen(function* (_) {
   const converter = yield* _(Converter.Converter);
   const frontmatter = yield* _(Frontmatter.Frontmatter);
   const siteConfig = yield* _(SiteConfig.SiteConfig);
+  const linkCheck = yield* _(LinkCheck.LinkCheck);
 
   yield* _(Effect.logInfo("Start build"));
   const files = yield* _(fileSystem.buildMarkdownFiles);
@@ -40,6 +42,7 @@ const program = Effect.gen(function* (_) {
               })
             );
 
+            yield* _(linkCheck.checkLinks(html));
             return yield* _(
               fileSystem.writeHtml({
                 fileName: markdownFile.fileName,
@@ -81,7 +84,8 @@ const MainLive = Layer.mergeAll(
   Template.TemplateMustache,
   Css.CssLightingCss,
   FileSystem.FileSystemLive,
-  Frontmatter.FrontmatterLive
+  Frontmatter.FrontmatterLive,
+  LinkCheck.LinkCheckLive
 );
 
 const runnable = program.pipe(
@@ -91,6 +95,9 @@ const runnable = program.pipe(
 
 const main: Effect.Effect<never, never, void> = runnable.pipe(
   Effect.catchTags({
+    HtmlParseError: (error) => Effect.logError("Invalid HTML"),
+    InvalidLinksError: (error) =>
+      Effect.logError(`Found invalid links: ${error.links}`),
     SiteConfigError: (error) => Effect.logError("Config error"),
     BadArgument: (error) => Effect.logError("Arg error"),
     SystemError: (error) => Effect.logError(`[System error] ${error.message}`),

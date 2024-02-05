@@ -34,6 +34,7 @@
     "html-minifier": "^4.0.0",
     "lightningcss": "^1.23.0",
     "mustache": "^4.2.0",
+    "node-html-parser": "^6.1.12",
     "showdown": "^2.1.0"
   },
   "devDependencies": {
