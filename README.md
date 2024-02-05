@@ -26,9 +26,7 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
 - [x] `import * as path from "node:path"`
 - [x] Add `npx` command
 - [x] Check all links are not broken
-- [ ] Validate `tags` in `config.json`
-- [ ] CLI (?)
-- [ ] Deploy (how to?)
+- [x] Deploy
 
 ## Notes
 - Use `npx --loglevel silly ..` from `example` folder to debug `npx` command
