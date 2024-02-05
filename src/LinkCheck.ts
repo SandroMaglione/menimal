@@ -81,7 +81,9 @@ export const LinkCheckLive = Layer.effect(
           yield* _(
             allInternalLinks,
             Effect.validateAll((href) =>
-              href.endsWith(".html") && fileNames.includes(file.fileName(href))
+              href === "/" ||
+              (href.endsWith(".html") &&
+                fileNames.includes(file.fileName(href)))
                 ? Effect.succeed(href)
                 : Effect.fail(href)
             ),
