@@ -6,7 +6,7 @@ Some **markdown** text here
 
 ## １．僕がCNPを買った理由【３つある】
 
-次のとおりなので、順番に書きます。
+次のとおりなので、[順番に書きます](this-is-the-title-of-the-article.html)。
 
 > - 理由①：コミュニティの強さに気付いた
 > - 理由②：外国人が気付いていない優位性

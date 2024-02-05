@@ -7,9 +7,15 @@ import * as file from "./file.js";
 import type { FrontmatterSchema } from "./schema.js";
 
 interface MarkdownFile {
+  /**
+   * Original markdown file name with `.md` extension
+   */
   origin: string;
-  markdown: string;
+  /**
+   * Original markdown file name with no extension and all lowercase (link)
+   */
   fileName: string;
+  markdown: string;
   title: string;
   modifiedAt: Date;
 }

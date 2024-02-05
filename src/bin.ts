@@ -21,6 +21,7 @@ const program = Effect.gen(function* (_) {
 
   yield* _(Effect.logInfo("Start build"));
   const files = yield* _(fileSystem.buildMarkdownFiles);
+  const fileNames = files.map(({ fileName }) => fileName);
 
   yield* _(
     Effect.all(
@@ -42,7 +43,7 @@ const program = Effect.gen(function* (_) {
               })
             );
 
-            yield* _(linkCheck.checkLinks(html));
+            yield* _(linkCheck.checkLinks({ html, fileNames }));
             return yield* _(
               fileSystem.writeHtml({
                 fileName: markdownFile.fileName,

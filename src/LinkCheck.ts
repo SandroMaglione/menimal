@@ -8,8 +8,10 @@ import {
   pipe,
 } from "effect";
 import * as HtmlParse from "./HtmlParse";
+import * as file from "./file.js";
 
 class InvalidLinksError extends Data.TaggedError("InvalidLinksError")<{
+  source: "internal" | "external";
   links: readonly string[];
 }> {}
 
@@ -18,9 +20,14 @@ export interface LinkCheck {
 }
 
 export interface LinkCheckImpl {
-  checkLinks: (
-    html: string
-  ) => Effect.Effect<never, HtmlParse.HtmlParseError | InvalidLinksError, void>;
+  checkLinks: (params: {
+    html: string;
+    fileNames: readonly string[];
+  }) => Effect.Effect<
+    never,
+    HtmlParse.HtmlParseError | InvalidLinksError,
+    void
+  >;
 }
 
 export const LinkCheck = Context.Tag<LinkCheck, LinkCheckImpl>(
@@ -31,21 +38,26 @@ export const LinkCheckLive = Layer.effect(
   LinkCheck,
   Effect.map(HtmlParse.HtmlParse, (htmlParse) =>
     LinkCheck.of({
-      checkLinks: (html) =>
+      checkLinks: ({ html, fileNames }) =>
         Effect.gen(function* (_) {
           const htmlElement = yield* _(htmlParse.parse(html));
-          const allLinks = pipe(
+          const [allInternalLinks, allExternalLinks] = pipe(
             htmlElement.getElementsByTagName("A"),
             ReadonlyArray.filterMap((element) =>
               Option.fromNullable(element.getAttribute("HREF"))
             ),
-            ReadonlyArray.filter((href) => href.startsWith("http"))
+            ReadonlyArray.partition((href) => href.startsWith("http"))
           );
 
-          yield* _(Effect.logInfo(`🔗 ${allLinks.length} total links`));
+          yield* _(
+            Effect.logInfo(`🔗 ${allInternalLinks.length} total internal links`)
+          );
+          yield* _(
+            Effect.logInfo(`🔗 ${allExternalLinks.length} total external links`)
+          );
 
           yield* _(
-            allLinks,
+            allExternalLinks,
             Effect.validateAll((href) =>
               pipe(
                 Effect.tryPromise({
@@ -58,7 +70,27 @@ export const LinkCheckLive = Layer.effect(
               )
             ),
             Effect.mapError(
-              (invalidLinks) => new InvalidLinksError({ links: invalidLinks })
+              (invalidLinks) =>
+                new InvalidLinksError({
+                  links: invalidLinks,
+                  source: "external",
+                })
+            )
+          );
+
+          yield* _(
+            allInternalLinks,
+            Effect.validateAll((href) =>
+              href.endsWith(".html") && fileNames.includes(file.fileName(href))
+                ? Effect.succeed(href)
+                : Effect.fail(href)
+            ),
+            Effect.mapError(
+              (invalidLinks) =>
+                new InvalidLinksError({
+                  links: invalidLinks,
+                  source: "internal",
+                })
             )
           );
 
