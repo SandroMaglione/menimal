@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SandroMaglione/effect-static-site-generation.git"
+    "url": "git+https://github.com/SandroMaglione/menimal.git"
   },
   "keywords": [
     "effect"
