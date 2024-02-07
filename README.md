@@ -27,6 +27,12 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
 - [x] Add `npx` command
 - [x] Check all links are not broken
 - [x] Deploy
+- [ ] Preload fonts in HTML `<link rel="preload" href="font.woff2" as="font" crossorigin type="font/woff2">`
+
+## Other projects
+- [Hexo](https://hexo.io/)
+- [Jekyll](https://jekyllrb.com/)
+- [Hugo](https://gohugo.io/)
 
 ## Notes
 - Use `npx --loglevel silly ..` from `example` folder to debug `npx` command
