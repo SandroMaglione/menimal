@@ -1,4 +1,4 @@
-# `Menimal` 🤏
+<h1>Menimal 🤏</h1>
 <p>
   <a href="https://github.com/SandroMaglione">
     <img alt="GitHub: SandroMaglione" src="https://img.shields.io/github/followers/SandroMaglione?label=Follow&style=social" target="_blank" />
@@ -12,11 +12,29 @@
 
 > Focus on content: **just write markdown files, css styles, and everything else is generated for you** 
 
+![Menimal folder structure](/docs/menimal-folder-structure.png "Folder structure")
+
 `Menimal` is minimal by design:
 - No javascript (no `package.json`)
 - No HTML templates
 - No mdx
 - No SEO or metadata
+
+***
+
+- [Getting started](#getting-started)
+  - [Deploy](#deploy)
+- [Folder structure](#folder-structure)
+  - [`pages`](#pages)
+  - [`static`](#static)
+  - [`config.json`](#configjson)
+  - [`style.css`](#stylecss)
+- [Roadmap](#roadmap)
+- [License](#license)
+- [Notes](#notes)
+  - [Other static site generators](#other-static-site-generators)
+  - [Development](#development)
+  - [Implementation](#implementation)
 
 ## Getting started
 `Menimal` is a single `npx` script that you can run from everywhere without installing any package.
@@ -32,9 +50,14 @@ npx menimal
 This will generate a `build` folder containing your static website.
 
 ### Deploy
-Hosting platforms allow to define a build command and a build folder:
+Hosting platforms allow to define a build command and an output folder:
 - Build command: `npx menimal`
-- Build folder: `build`
+- Output folder: `build`
+
+
+![Deploy config](/docs/deploy-config.png "Deploy config")
+
+![Menimal build folder](/docs/menimal-build-folder.png "Build folder")
 
 That's all. You can deploy `Menimal` everywhere 🤝
 
@@ -77,9 +100,22 @@ For now config requires a single field: the name of the website displayed in `<h
 ### [`style.css`](/example/style.css)
 All the styles are defined **in a single css file**.
 
+> You can view the generated HTML structure of each file inside [templates](/src/templates/)
+
 This file will be minified and imported in every generated page.
 
+## Roadmap
+- Preload fonts in HTML
+```html
+<link rel="preload" href="font.woff2" as="font" crossorigin type="font/woff2">
+```
+## License
+
+MIT License, see the [LICENSE.md](/LICENSE) file for details.
+
 ***
+
+## Notes
 
 This project is part of my weekly newsletter at [**sandromaglione.com**](https://www.sandromaglione.com/newsletter?ref=Github&utm_medium=newsletter_project&utm_term=effect).
 
@@ -88,27 +124,21 @@ This project is part of my weekly newsletter at [**sandromaglione.com**](https:/
     <img alt="sandromaglione.com Newsletter weekly project" src="https://www.sandromaglione.com/static/images/newsletter_banner.webp" target="_blank" /> 
 </a>
 
-## TODO
-- [x] Generate static files (`favicon.ico`, `robots.txt`)
-- [x] `frontmatter` (title, tags, category)
-- [x] Minify html build
-- [x] Configuration file (folder names for `pages`, `build`, styles, website name, description)
-- [x] Index (list posts)
-- [x] `import * as path from "node:path"`
-- [x] Add `npx` command
-- [x] Check all links are not broken
-- [x] Deploy
-- [ ] Preload fonts in HTML `<link rel="preload" href="font.woff2" as="font" crossorigin type="font/woff2">`
 
-## Other projects
+### Other static site generators
 - [Hexo](https://hexo.io/)
 - [Jekyll](https://jekyllrb.com/)
 - [Hugo](https://gohugo.io/)
 
-## Notes
+### Development
 - Use `npx --loglevel silly ..` from `example` folder to debug `npx` command
 
-## Project structure
+### Implementation
 
-**Read all the details of the implementation in the full article** 🔜
+**Read all the details of the implementation in the full article** 👇
+
+<a href="https://www.sandromaglione.com/articles/build-and-publish-an-npx-command-to-npm-with-typescript?ref=Github&utm_medium=newsletter_project&utm_term=effect">
+    <img alt="Read the full article on my website" src="https://www.sandromaglione.com/api/image?title=Build%20and%20publish%20an%20npx%20command%20to%20npm%20with%20Typescript&publishedAt=2024-02-07" target="_blank" /> 
+</a>
+
 
