@@ -24,13 +24,13 @@ export interface LinkCheckImpl {
     html: string;
     fileNames: readonly string[];
   }) => Effect.Effect<
-    never,
+    void,
     HtmlParse.HtmlParseError | InvalidLinksError,
-    void
+    never
   >;
 }
 
-export const LinkCheck = Context.Tag<LinkCheck, LinkCheckImpl>(
+export const LinkCheck = Context.GenericTag<LinkCheck, LinkCheckImpl>(
   "@app/LinkCheck"
 );
 

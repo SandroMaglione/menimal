@@ -1,6 +1,8 @@
-import * as Fs from "@effect/platform-node/FileSystem";
-import * as Path from "@effect/platform-node/Path";
+import { NodePath } from "@effect/platform-node";
+import * as NodeFs from "@effect/platform-node/NodeFileSystem";
 import * as PlatformError from "@effect/platform/Error";
+import * as Fs from "@effect/platform/FileSystem";
+import * as Path from "@effect/platform/Path";
 import { Context, Data, Effect, Layer, ReadonlyArray, pipe } from "effect";
 import _Mustache from "mustache";
 import * as file from "./file.js";
@@ -35,21 +37,23 @@ export interface TemplateImpl {
   makePost: (
     params: PostParams
   ) => Effect.Effect<
-    never,
+    string,
     PlatformError.PlatformError | TemplateError,
-    string
+    never
   >;
 
   makeIndex: (
     params: IndexParams
   ) => Effect.Effect<
-    never,
+    string,
     PlatformError.PlatformError | TemplateError,
-    string
+    never
   >;
 }
 
-export const Template = Context.Tag<Template, TemplateImpl>("@app/Template");
+export const Template = Context.GenericTag<Template, TemplateImpl>(
+  "@app/Template"
+);
 
 export const TemplateMustache = Layer.effect(
   Template,
@@ -102,4 +106,4 @@ export const TemplateMustache = Layer.effect(
         }),
     })
   )
-).pipe(Layer.provide(Layer.mergeAll(Fs.layer, Path.layer)));
+).pipe(Layer.provide(Layer.mergeAll(NodeFs.layer, NodePath.layer)));

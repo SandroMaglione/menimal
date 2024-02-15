@@ -1,5 +1,6 @@
-import * as Fs from "@effect/platform-node/FileSystem";
+import * as NodeFs from "@effect/platform-node/NodeFileSystem";
 import * as PlatformError from "@effect/platform/Error";
+import * as Fs from "@effect/platform/FileSystem";
 import { Context, Data, Effect, Layer } from "effect";
 import * as _Lightningcss from "lightningcss";
 
@@ -13,13 +14,13 @@ export interface Css {
 
 export interface CssImpl {
   build: Effect.Effect<
-    never,
+    globalThis.Uint8Array,
     PlatformError.PlatformError | CssError,
-    globalThis.Uint8Array
+    never
   >;
 }
 
-export const Css = Context.Tag<Css, CssImpl>("@app/Css");
+export const Css = Context.GenericTag<Css, CssImpl>("@app/Css");
 
 export const CssLightingCss = Layer.effect(
   Css,
@@ -36,4 +37,4 @@ export const CssLightingCss = Layer.effect(
       }),
     })
   )
-).pipe(Layer.provide(Fs.layer));
+).pipe(Layer.provide(NodeFs.layer));

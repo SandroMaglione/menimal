@@ -1,6 +1,6 @@
 {
   "name": "menimal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Sandro Maglione",
   "description": "Generate a static html-only website from markdown and css",
   "license": "MIT",
@@ -25,11 +25,11 @@
     "upload": "pnpm bundle && npm publish"
   },
   "dependencies": {
-    "@effect/platform": "^0.43.7",
-    "@effect/platform-node": "^0.42.7",
-    "@effect/schema": "^0.61.5",
+    "@effect/platform": "^0.45.3",
+    "@effect/platform-node": "^0.44.4",
+    "@effect/schema": "^0.62.7",
     "chalk": "^4.1.2",
-    "effect": "^2.2.3",
+    "effect": "^2.3.6",
     "gray-matter": "^4.0.3",
     "html-minifier": "^4.0.0",
     "lightningcss": "^1.23.0",

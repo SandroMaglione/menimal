@@ -12,10 +12,10 @@ export interface HtmlParse {
 export interface HtmlParseImpl {
   parse: (
     html: string
-  ) => Effect.Effect<never, HtmlParseError, NodeHtmlParse.HTMLElement>;
+  ) => Effect.Effect<NodeHtmlParse.HTMLElement, HtmlParseError, never>;
 }
 
-export const HtmlParse = Context.Tag<HtmlParse, HtmlParseImpl>(
+export const HtmlParse = Context.GenericTag<HtmlParse, HtmlParseImpl>(
   "@app/HtmlParse"
 );
 

@@ -13,10 +13,10 @@ export interface Converter {
 }
 
 export interface ConverterImpl {
-  makeHtml: (markdown: string) => Effect.Effect<never, ConverterError, Html>;
+  makeHtml: (markdown: string) => Effect.Effect<Html, ConverterError, never>;
 }
 
-export const Converter = Context.Tag<Converter, ConverterImpl>(
+export const Converter = Context.GenericTag<Converter, ConverterImpl>(
   "@app/Converter"
 );
 

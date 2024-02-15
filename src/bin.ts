@@ -89,7 +89,7 @@ const runnable = program.pipe(
   Effect.provide(MainLive)
 );
 
-const main: Effect.Effect<never, never, void> = runnable.pipe(
+const main: Effect.Effect<void, never, never> = runnable.pipe(
   Effect.catchTags({
     HtmlParseError: (error) => Effect.logError("Invalid HTML"),
     InvalidLinksError: (error) =>

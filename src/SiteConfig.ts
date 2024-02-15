@@ -11,7 +11,7 @@ export interface SiteConfig {
   readonly _: unique symbol;
 }
 
-export const SiteConfig = Context.Tag<SiteConfig, ConfigSchema>(
+export const SiteConfig = Context.GenericTag<SiteConfig, ConfigSchema>(
   "@app/SiteConfig"
 );
 

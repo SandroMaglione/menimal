@@ -1,6 +1,8 @@
-import * as Fs from "@effect/platform-node/FileSystem";
-import * as Path from "@effect/platform-node/Path";
+import * as NodeFs from "@effect/platform-node/NodeFileSystem";
+import * as NodePath from "@effect/platform-node/NodePath";
 import * as PlatformError from "@effect/platform/Error";
+import * as Fs from "@effect/platform/FileSystem";
+import * as Path from "@effect/platform/Path";
 import { Context, Effect, Layer, Option, ReadonlyArray, pipe } from "effect";
 import * as _HtmlMinifier from "html-minifier"; // TODO: Change with `@minify-html/node` (https://github.com/wilsonzlin/minify-html/issues/172)
 import * as Frontmatter from "./Frontmatter.js";
@@ -31,31 +33,31 @@ export interface FileSystem {
 
 export interface FileSystemImpl {
   buildMarkdownFiles: Effect.Effect<
-    never,
+    MarkdownFile[],
     Frontmatter.FrontmatterError | PlatformError.PlatformError,
-    MarkdownFile[]
+    never
   >;
 
-  readConfig: Effect.Effect<never, PlatformError.PlatformError, string>;
+  readConfig: Effect.Effect<string, PlatformError.PlatformError, never>;
 
   writeHtml: (params: {
     fileName: string;
     html: string;
     frontmatterSchema: FrontmatterSchema;
-  }) => Effect.Effect<never, PlatformError.PlatformError, void>;
+  }) => Effect.Effect<void, PlatformError.PlatformError, never>;
 
   writeIndex: (params: {
     html: string;
-  }) => Effect.Effect<never, PlatformError.PlatformError, void>;
+  }) => Effect.Effect<void, PlatformError.PlatformError, never>;
 
   writeCss: (params: {
     source: globalThis.Uint8Array;
-  }) => Effect.Effect<never, PlatformError.PlatformError, void>;
+  }) => Effect.Effect<void, PlatformError.PlatformError, never>;
 
-  writeStaticFiles: Effect.Effect<never, PlatformError.PlatformError, void>;
+  writeStaticFiles: Effect.Effect<void, PlatformError.PlatformError, never>;
 }
 
-export const FileSystem = Context.Tag<FileSystem, FileSystemImpl>(
+export const FileSystem = Context.GenericTag<FileSystem, FileSystemImpl>(
   "@app/FileSystem"
 );
 
@@ -204,6 +206,6 @@ export const FileSystemLive = Layer.effect(
   )
 ).pipe(
   Layer.provide(
-    Layer.mergeAll(Fs.layer, Path.layer, Frontmatter.FrontmatterLive)
+    Layer.mergeAll(NodeFs.layer, NodePath.layer, Frontmatter.FrontmatterLive)
   )
 );

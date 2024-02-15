@@ -10,6 +10,8 @@ const make = new _Showdown.Converter({
   strikethrough: true,
 });
 
-export const Showdown = Context.Tag<Showdown, typeof make>("@app/Showdown");
+export const Showdown = Context.GenericTag<Showdown, typeof make>(
+  "@app/Showdown"
+);
 
 export const ShowdownLive = Layer.succeed(Showdown, Showdown.of(make));

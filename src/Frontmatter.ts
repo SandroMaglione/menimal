@@ -15,13 +15,13 @@ export interface FrontmatterImpl {
   extractFrontmatter: (
     text: string
   ) => Effect.Effect<
-    never,
+    { body: string; frontmatterSchema: FrontmatterSchema },
     FrontmatterError,
-    { body: string; frontmatterSchema: FrontmatterSchema }
+    never
   >;
 }
 
-export const Frontmatter = Context.Tag<Frontmatter, FrontmatterImpl>(
+export const Frontmatter = Context.GenericTag<Frontmatter, FrontmatterImpl>(
   "@app/Frontmatter"
 );
 
